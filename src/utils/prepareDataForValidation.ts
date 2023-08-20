@@ -1,13 +1,13 @@
 import { isPlainObject } from "lodash";
-import { FormValues } from "../types";
+import { FormValues } from "../shared/types";
 
 /**
  * Recursively prepare values.
  */
-export function prepareDataForValidation<T extends FormValues>(
+export function prepareDataForValidation<T extends Record<string, any>>(
   values: T
-): FormValues {
-  let data: FormValues = Array.isArray(values) ? [] : {};
+): FormValues<T> {
+  let data: Record<string, any> = Array.isArray(values) ? [] : {};
   for (let k in values) {
     if (Object.prototype.hasOwnProperty.call(values, k)) {
       const key = String(k);
@@ -26,5 +26,5 @@ export function prepareDataForValidation<T extends FormValues>(
       }
     }
   }
-  return data;
+  return data as FormValues<T>;
 }

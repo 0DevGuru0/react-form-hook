@@ -1,14 +1,13 @@
 import * as Yup from "yup";
 import useForm from "../hooks/useForm";
 
-export const UncontrolledForm: React.FC = () => {
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-  });
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required().min(5),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+});
 
-  const { errors, onSubmit, onChange } = useForm({
-    initialValues: { name: "", email: "" },
+export const UncontrolledForm: React.FC = () => {
+  const { errors, onSubmit, onChange, submitting, onBlur, touched } = useForm({
     validationSchema,
     onSubmit: (submittedValues) => {
       console.log("Form submitted successfully!");
@@ -25,18 +24,25 @@ export const UncontrolledForm: React.FC = () => {
       <div>
         <label>
           Name:
-          <input name="name" type="text" onChange={onChange} />
+          <input name="name" type="text" onChange={onChange} onBlur={onBlur} />
         </label>
-        {errors.name && <span>{errors.name}</span>}
+        {errors.name && touched.name && <span>{errors.name}</span>}
       </div>
       <div>
         <label>
           Email:
-          <input name="email" type="email" onChange={onChange} />
+          <input
+            name="email"
+            type="email"
+            onChange={onChange}
+            onBlur={onBlur}
+          />
         </label>
-        {errors.email && <span>{errors.email}</span>}
+        {errors.email && touched.email && <span>{errors.email}</span>}
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={submitting}>
+        Submit
+      </button>
     </form>
   );
 };

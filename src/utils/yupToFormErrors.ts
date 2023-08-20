@@ -1,4 +1,4 @@
-import { FormErrors } from "../types";
+import { FormErrors } from "../shared/types";
 import { getIn } from "./getIn";
 import { setIn } from "./setIn";
 
